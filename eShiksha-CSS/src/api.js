@@ -5,7 +5,7 @@ import axios from "axios";
 // Otherwise, connect to your LIVE Render backend.
 const BASE_URL = window.location.hostname === "localhost"
   ? "http://localhost:5000/api"           // Local Development URL
-  : "https://full-sih.onrender.com/api";  // Live Production URL
+  : "https://eshiksha-backend.onrender.com/api";  // Live Production URL
 
 const api = axios.create({
   baseURL: BASE_URL,
