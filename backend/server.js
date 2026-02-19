@@ -65,7 +65,6 @@ app.use("/api/parents", parentRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/updates", classUpdatesRouter);
 app.use("/api/exams", examRoutes); 
-app.use(cors({ origin: 'http://localhost:5173' }));
 app.use('/api/doubts', doubtRoutes);
 /* =====================================================
    CONNECT DB & START SERVER
