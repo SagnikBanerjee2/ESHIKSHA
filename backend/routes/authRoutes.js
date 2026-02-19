@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer'); // Required for sending emails
+ // Required for sending emails
 const User = require('../models/User');
 const auth = require('../middleware/auth');
 
@@ -27,7 +27,7 @@ const sendEmail = async (to, subject, text) => {
       {
         sender: {
           name: "eShiksha Support",
-          email: "campuscoders1@gmail.com"
+          email: "campuscoders1@gmail.com"   // must be VERIFIED in Brevo
         },
         to: [{ email: to }],
         subject: subject,
@@ -45,7 +45,6 @@ const sendEmail = async (to, subject, text) => {
     throw error;
   }
 };
-
 
 
 
@@ -90,13 +89,13 @@ router.post('/register/send-otp', async (req, res) => {
     pendingSignupOtps[normalizedEmail] = { otp, expiresAt };
 
     // Send Email
-    const transporter = createTransporter();
-    await transporter.sendMail({
-      from: 'eShiksha Support <eshiksha@gmail.com>',
-      to: normalizedEmail,
-      subject: 'Account Activation OTP',
-      text: `Your OTP is ${otp}. Valid for 10 minutes.`
-    });
+  await sendEmail(
+    normalizedEmail,
+    "Password Reset OTP",
+    `Your OTP is ${otp}. Valid for 10 minutes.`
+);
+
+
 
     res.json({ message: 'OTP sent successfully' });
   } catch (err) {
@@ -314,13 +313,12 @@ router.post('/forgot-password', async (req, res) => {
     await user.save();
 
     // Send Email
-    const transporter = createTransporter();
-    await transporter.sendMail({
-      from: 'eShiksha Support <eshiksha@gmail.com>',
-      to: normalizedEmail,
-      subject: 'Password Reset OTP',
-      text: `Your OTP is ${otp}. Valid for 10 minutes.`
-    });
+    await sendEmail(
+      normalizedEmail,
+      "Password Reset OTP",
+      `Your OTP is ${otp}. Valid for 10 minutes.`
+);
+
 
     res.json({ message: 'OTP sent successfully' });
   } catch (err) {
