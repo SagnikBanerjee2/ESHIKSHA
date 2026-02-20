@@ -943,7 +943,7 @@ function StudentTracker({ activeClass }) {
       sel_ac: { en: "Select an Active Classroom in Account settings.", pa: "ਖਾਤਾ ਸੈਟਿੰਗਾਂ ਵਿੱਚ ਇੱਕ ਸਰਗਰਮ ਜਮਾਤ ਚੁਣੋ।", hi: "खाता सेटिंग्स में एक सक्रिय कक्षा चुनें।", bn: "অ্যাকাউন্ট সেটিংসে একটি সক্রিয় ক্লাসরুম নির্বাচন করুন।" },
       stu_nm: { en: "Student Name", pa: "ਵਿਦਿਆਰਥੀ ਦਾ ਨਾਮ", hi: "छात्र का नाम", bn: "ছাত্রের নাম" },
       scr: { en: "Avg Score", pa: "ਔਸਤ ਸਕੋਰ", hi: "औसत स्कोर", bn: "গড় স্কোর" },
-      att: { en: "Attendance", pa: "ਹਾਜ਼ਰੀ", hi: "उपस्थिति", bn: "उपস্থিতি" },
+      
       qz: { en: "Quizzes", pa: "ਕਵਿਜ਼", hi: "क्विज़", bn: "কুইজ" }
   };
   const [stats, setStats] = useState([]);
@@ -1014,7 +1014,7 @@ function StudentTracker({ activeClass }) {
                                {typeof s.avgScore === 'number' ? s.avgScore.toFixed(1) : '0'}%
                            </td>
                            <td style={{ padding: 15 }}>
-                               {typeof s.attendancePercent === 'number' ? s.attendancePercent : '0'}%
+                               
                            </td>
                            <td style={{ padding: 15 }}>
                                {s.attemptsCount || 0} / {s.totalQuizzes || 0}
