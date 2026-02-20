@@ -98,7 +98,7 @@ export default function StudentDashboard() {
   };
 
   const OFFERS = [
-    { icon: <Tv />, title: t(content.live_cls), desc: t(content.live_desc), color: "#3b82f6" },
+    
     { icon: <BookOpen />, title: t(content.pdf_notes), desc: t(content.pdf_desc), color: "#8b5cf6" },
     { icon: <Zap />, title: t(content.daily_quiz), desc: t(content.quiz_desc), color: "#f59e0b" },
     { icon: <PenTool />, title: t(content.live_exams), desc: t(content.exam_desc), color: "#ef4444" },
