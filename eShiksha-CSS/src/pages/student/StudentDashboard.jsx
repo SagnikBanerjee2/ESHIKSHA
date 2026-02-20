@@ -64,7 +64,7 @@ export default function StudentDashboard() {
     skills: { en: "Your Subjects", pa: "ਤੁਹਾਡੇ ਵਿਸ਼ੇ", hi: "आपके विषय", bn: "আপনার বিষয়" },
     
     // Offers / Features
-    live_cls: { en: "Live Classes", pa: "ਲਾਈਵ ਕਲਾਸਾਂ", hi: "लाइव कक्षाएं", bn: "লাইভ ক্লাস" },
+    
     live_desc: { en: "Interactive streaming", pa: "ਇੰਟਰਐਕਟਿਵ ਸਟ੍ਰੀਮਿੰਗ", hi: "इंटरएक्टिव स्ट्रीमिंग", bn: "ইন্টারঅ্যাক্টিভ স্ট্রিমিং" },
     pdf_notes: { en: "PDF Notes", pa: "PDF ਨੋਟਸ", hi: "PDF नोट्स", bn: "PDF নোট" },
     pdf_desc: { en: "Deep dive learning", pa: "ਡੂੰਘਾਈ ਨਾਲ ਸਿੱਖਣਾ", hi: "गहराई से सीखना", bn: "গভীরভাবে শেখা" },
