@@ -20,7 +20,7 @@ export default function LandingPage() {
     active: { en: "Active Learners", pa: "ਸਰਗਰਮ", hi: "सक्रिय छात्र", bn: "সক্রিয় শিক্ষার্থী" },
     online: { en: "Online Now", pa: "ਹੁਣੇ ਔਨਲਾਈਨ", hi: "अभी ऑनलाइन", bn: "এখন অনলাইনে" },
     titleStart: { en: "After School Learning With", pa: "ਹੁਨਰ ਸਿੱਖੋ", hi: "स्कूल के बाद सीखें", bn: "স্কুল পরবর্তী শিক্ষা" },
-    titleEnd: { en: "eShikha", pa: "ਸਿੱਖਿਆ ਨਾਲ", hi: "ई-शिक्षा के साथ", bn: "ই-শিক্ষার সাথে" },
+    titleEnd: { en: "eShiksha", pa: "ਸਿੱਖਿਆ ਨਾਲ", hi: "ई-शिक्षा के साथ", bn: "ই-শিক্ষার সাথে" },
     subtitle: { en: "The ultimate after-school companion.", pa: "ਸਕੂਲ ਤੋਂ ਬਾਅਦ ਦਾ ਸਾਥੀ।", hi: "आपका बेहतरीन स्टडी पार्टनर।", bn: "আপনার সেরা স্টাডি পার্টনার।" },
     subtitle2: { en: "Level up your grades with practice", pa: "AI ਨਾਲ ਗ੍ਰੇਡ ਸੁਧਾਰੋ।", hi: "अभ्यास से ग्रेड सुधारें", bn: "অনুশীলন করে গ্রেড বাড়ান" },
     stu_portal: { en: "Student Zone", pa: "ਵਿਦਿਆਰਥੀ", hi: "छात्र ज़ोन", bn: "ছাত্র জোন" },
