@@ -285,7 +285,7 @@ export default function TeacherDashboard() {
               <div className="section-header">{t(content.live_ana)}</div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '25px' }}>
                 <StatCard label={t(content.tot_stu)} value={homeStats.totalStudents ?? '--'} icon={<Users size={28} color="#fb923c" />} bg="rgba(251, 146, 60, 0.1)" color="white" />
-                <StatCard label={t(content.avg_att)} value={homeStats.avgAttendance ? `${homeStats.avgAttendance}%` : '--'} icon={<CheckCircle size={28} color="#4ade80" />} bg="rgba(74, 222, 128, 0.1)" color="#4ade80" />
+                
                 <StatCard label={t(content.avg_grow)} value={homeStats.avgScore ? `+${homeStats.avgScore}%` : '--'} icon={<TrendingUp size={28} color="#8b5cf6" />} bg="rgba(139, 92, 246, 0.1)" color="#8b5cf6" />
               </div>
 
