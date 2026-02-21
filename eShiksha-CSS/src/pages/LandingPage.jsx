@@ -371,6 +371,49 @@ export default function LandingPage() {
             </motion.div>
           </Link>
         </div>
+                {/* 🔹 NEW: MEET THE DEVELOPERS BUTTON 🔹 */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+          style={{ marginTop: '60px', textAlign: 'center', width: '100%', display: 'flex', justifyContent: 'center' }}
+        >
+          <Link to="/developers" style={{ textDecoration: 'none' }}>
+            <button 
+              style={{
+                background: 'rgba(255, 255, 255, 0.03)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                color: '#94a3b8',
+                padding: '12px 24px',
+                borderRadius: '50px',
+                fontSize: '0.9rem',
+                fontWeight: '600',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                transition: 'all 0.3s ease',
+                boxShadow: '0 10px 25px -5px rgba(0,0,0,0.3)',
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.background = 'rgba(56, 189, 248, 0.1)';
+                e.currentTarget.style.borderColor = 'rgba(56, 189, 248, 0.4)';
+                e.currentTarget.style.color = '#38bdf8';
+                e.currentTarget.style.transform = 'translateY(-3px)';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                e.currentTarget.style.color = '#94a3b8';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
+            >
+              <Code2 size={18} />
+              Meet the Developers
+            </button>
+          </Link>
+        </motion.div>
 
       </motion.div>
     </div>
