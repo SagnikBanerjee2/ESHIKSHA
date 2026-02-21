@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import api from '../api'; 
 import { 
   ChevronRight, Rocket, Sparkles, Heart, 
-  Users, Activity 
+  Users, Activity, Code2
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
