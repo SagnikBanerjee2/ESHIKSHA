@@ -7,7 +7,7 @@ import LanguageFloatingBtn from './components/LanguageFloatingBtn';
 
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
-
+import DeveloperSection from './pages/DeveloperSection';
 import StudentDashboard from './pages/student/StudentDashboard';
 import TeacherDashboard from './pages/teacher/TeacherDashboard';
 
@@ -29,6 +29,7 @@ export default function App() {
           {/* Public Pages */}
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/developers" element={<DeveloperSection />} />
 
           {/* Role Dashboards */}
           <Route path="/student/dashboard" element={<StudentDashboard />} />
