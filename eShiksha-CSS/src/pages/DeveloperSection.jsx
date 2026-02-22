@@ -5,6 +5,7 @@ import { Github, Linkedin, Mail, Twitter, Globe, Code2, Heart, ChevronLeft } fro
 
 export default function DeveloperSection() {
   const navigate = useNavigate();
+  window.scrollTo(0, 0);
 
   // 🔹 ADD YOUR TEAM DETAILS HERE
   const developers = [
@@ -383,4 +384,5 @@ export default function DeveloperSection() {
 
     </div>
   );
+
 }
