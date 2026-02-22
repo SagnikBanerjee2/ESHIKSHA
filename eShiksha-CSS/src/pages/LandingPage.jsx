@@ -1,24 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import api from '../api'; 
 import { 
   ChevronRight, Rocket, Sparkles, Heart, 
-  Users, Activity, Code2
+  Users, Activity, Code2 
 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
 export default function LandingPage() {
   const [userStats, setUserStats] = useState({ totalUsers: 0, studentCount: 0 });
   const [statsLoading, setStatsLoading] = useState(true);
-  const [windowSize, setWindowSize] = useState({ w: 0, h: 0 });
   
   const { t } = useLanguage(); 
 
   const content = {
     version: { en: "ONLINE", pa: "ਲਾਈਵ", hi: "ऑनलाइन", bn: "অনলাইন" },
-    active: { en: "Total Users", pa: "ਕੁੱਲ ਵਰਤੋਂਕਾਰ", hi: "कुल उपयोगकर्ता", bn: "মোট ব্যবহারকারী" },
-    online: { en: "Students", pa: "ਵਿਦਿਆਰਥੀ", hi: "छात्र", bn: "ছাত্ররা" },
+    active: { en: "Active Learners", pa: "ਸਰਗਰਮ", hi: "सक्रिय छात्र", bn: "সক্রিয় শিক্ষার্থী" },
+    online: { en: "Online Now", pa: "ਹੁਣੇ ਔਨਲਾਈਨ", hi: "अभी ऑनलाइन", bn: "এখন অনলাইনে" },
     titleStart: { en: "After School Learning With", pa: "ਹੁਨਰ ਸਿੱਖੋ", hi: "स्कूल के बाद सीखें", bn: "স্কুল পরবর্তী শিক্ষা" },
     titleEnd: { en: "eShiksha", pa: "ਸਿੱਖਿਆ ਨਾਲ", hi: "ई-शिक्षा के साथ", bn: "ই-শিক্ষার সাথে" },
     subtitle: { en: "The ultimate after-school companion.", pa: "ਸਕੂਲ ਤੋਂ ਬਾਅਦ ਦਾ ਸਾਥੀ।", hi: "आपका बेहतरीन स्टडी पार्टनर।", bn: "আপনার সেরা স্টাডি পার্টনার।" },
@@ -29,8 +28,13 @@ export default function LandingPage() {
     teach_desc: { en: "Track & Guide Progress", pa: "ਤਰੱਕੀ ਟ੍ਰੈਕ ਕਰੋ", hi: "प्रगति ट्रैक करें", bn: "অগ্রগতি ট্র্যাক করুন" },
     parent_portal: { en: "Parent View", pa: "ਮਾਪੇ", hi: "अभिभावक", bn: "অভিভাবক" },
     parent_desc: { en: "Monitor Daily Growth", pa: "ਰੋਜ਼ਾਨਾ ਵਿਕਾਸ ਦੇਖੋ", hi: "दैनिक विकास देखें", bn: "দৈনিক গ্রোথ দেখুন" },
-    enter: { en: "Enter Portal", pa: "ਦਾਖਲ ਹੋਵੋ", hi: "पोर्टल खोलें", bn: "প্রবেশ করুন" }
+    enter: { en: "Enter Portal", pa: "ਦਾਖਲ ਹੋਵੋ", hi: "पोर्टल खोलें", bn: "प्रবেশ করুন" }
   };
+
+  // Safe scroll-to-top on mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -43,18 +47,22 @@ export default function LandingPage() {
       } catch (err) {
         console.error('Failed to fetch user stats', err);
       } finally {
-        setStatsLoading(false);
+        setTimeout(() => setStatsLoading(false), 600);
       }
     };
     fetchStats();
-
-    setWindowSize({ w: window.innerWidth, h: window.innerHeight });
-    const handleResize = () => setWindowSize({ w: window.innerWidth, h: window.innerHeight });
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const particles = Array.from({ length: 60 });
+  const particles = useMemo(() => {
+    return Array.from({ length: 35 }).map(() => ({
+      x: Math.random() * 100, 
+      y: Math.random() * 100, 
+      scale: Math.random() * 0.4 + 0.2,
+      delay: Math.random() * 5,
+      duration: Math.random() * 3 + 2,
+      isThick: Math.random() > 0.7
+    }));
+  }, []);
 
   return (
     <div className="landing-wrapper">
@@ -80,14 +88,32 @@ export default function LandingPage() {
         }
 
         .landing-wrapper {
-          min-height: 100vh;
+          min-height: 100dvh; 
           background-color: var(--bg-color);
           font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', 'Noto Sans Bengali', 'Noto Sans Gurmukhi', sans-serif;
           position: relative;
-          overflow-x: hidden;
           color: var(--text-main);
           display: flex;
           flex-direction: column;
+        }
+
+        .background-trap {
+          position: fixed;
+          inset: 0;
+          overflow: hidden;
+          z-index: 0;
+          pointer-events: none;
+        }
+
+        .loading-screen {
+          position: fixed;
+          inset: 0;
+          background-color: var(--bg-color);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          z-index: 100;
         }
 
         .grid-background {
@@ -99,13 +125,13 @@ export default function LandingPage() {
           background-size: 50px 50px;
           transform: perspective(500px) rotateX(60deg);
           animation: planeMove 15s linear infinite;
-          opacity: 0.6; z-index: 0; pointer-events: none;
+          opacity: 0.6;
         }
         @keyframes planeMove { 0% { transform: perspective(500px) rotateX(60deg) translateY(0); } 100% { transform: perspective(500px) rotateX(60deg) translateY(50px); } }
 
         .glow-spot {
           position: absolute; width: 600px; height: 600px; border-radius: 50%;
-          filter: blur(140px); z-index: 0; animation: float 10s ease-in-out infinite;
+          filter: blur(140px); animation: float 10s ease-in-out infinite;
         }
         .glow-1 { top: -100px; left: -100px; background: var(--primary); opacity: 0.2; }
         .glow-2 { bottom: -100px; right: -100px; background: var(--secondary); opacity: 0.2; animation-delay: 5s; }
@@ -113,9 +139,9 @@ export default function LandingPage() {
         @keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, 50px); } }
 
         .glitter {
-          position: absolute; top: 0; left: 0;
+          position: absolute;
           background: var(--particle-color);
-          border-radius: 50%; pointer-events: none; z-index: 1;
+          border-radius: 50%;
           box-shadow: 0 0 4px white;
         }
 
@@ -222,13 +248,13 @@ export default function LandingPage() {
         @media (max-width: 768px) {
           .container { padding: 1.5rem 1rem; }
           .header-row {
-            flex-direction: column; /* 🔹 Forces items to stack */
-            align-items: flex-start; /* 🔹 Keeps the ONLINE pill securely on the left */
+            flex-direction: column;
+            align-items: flex-start;
             margin-bottom: 40px;
           }
           .stats-group {
             width: 100%;
-            justify-content: flex-start; /* 🔹 Aligns stats to the left under the pill */
+            justify-content: flex-start; 
           }
           .stat-card { flex: 1; }
           .hero { margin-bottom: 40px; }
@@ -238,184 +264,240 @@ export default function LandingPage() {
         }
       `}</style>
 
-      {/* Background Elements */}
-      <div className="grid-background"></div>
-      <div className="glow-spot glow-1"></div>
-      <div className="glow-spot glow-2"></div>
+      <AnimatePresence>
+        {statsLoading && (
+          <motion.div 
+            className="loading-screen"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0, scale: 1.1, filter: "blur(10px)", transition: { duration: 0.8, ease: "easeInOut" } }}
+          >
+            <div style={{ position: 'relative', width: '100px', height: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '30px' }}>
+              <motion.div
+                style={{
+                  position: 'absolute', width: '100%', height: '100%', borderRadius: '50%',
+                  border: '3px solid transparent',
+                  borderTopColor: 'var(--primary)',
+                  borderBottomColor: 'var(--secondary)',
+                  boxShadow: '0 0 20px rgba(212, 0, 255, 0.4)'
+                }}
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+              />
 
-      {/* Particles */}
-      {windowSize.w > 0 && particles.map((_, i) => (
-        <motion.div
-          key={i}
-          className="glitter"
-          initial={{ 
-            x: Math.random() * windowSize.w, 
-            y: Math.random() * windowSize.h, 
-            scale: Math.random() * 0.4 + 0.2, 
-            opacity: 0
-          }}
-          style={{ width: Math.random() > 0.7 ? '3px' : '1px', height: Math.random() > 0.7 ? '3px' : '1px' }}
-          animate={{ opacity: [0, 0.8, 0], scale: [0, 1.5, 0] }}
-          transition={{ duration: Math.random() * 3 + 2, repeat: Infinity, ease: "easeInOut", delay: Math.random() * 5 }}
-        />
-      ))}
+              <motion.div
+                style={{
+                  position: 'absolute', width: '65%', height: '65%', borderRadius: '50%',
+                  border: '3px solid transparent',
+                  borderLeftColor: '#38bdf8', 
+                  borderRightColor: '#10b981',
+                }}
+                animate={{ rotate: -360 }}
+                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+              />
 
-      <motion.div 
-        className="container"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-      >
-        
-        {/* TOP ROW */}
-        <div className="header-row">
-          <div className="version-pill">
-              <div className="dot"></div>
-              {t(content.version)}
-          </div>
+              <motion.div
+                animate={{ scale: [0.8, 1.1, 0.8], opacity: [0.6, 1, 0.6] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <Rocket size={28} color="#ffffff" style={{ filter: 'drop-shadow(0px 0px 8px rgba(255,255,255,0.8))' }}/>
+              </motion.div>
+            </div>
 
-          <div className="stats-group">
-            <motion.div 
-              className="stat-card"
-              style={{ '--stat-color': '#3cff00' }}
-              initial={{ y: -20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
+            <motion.h2
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
+              style={{ color: 'var(--text-main)', fontSize: '1.5rem', fontWeight: 800, letterSpacing: '1px', margin: 0 }}
             >
-              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '4px', opacity: 0.8 }}>
-                <Users size={16} color="#ffffff" />
-              </div>
-              <span className="stat-num">{statsLoading ? '-' : userStats.totalUsers}</span>
-              <span className="stat-label">{t(content.active)}</span>
-            </motion.div>
-
-            <motion.div 
-              className="stat-card"
-              style={{ '--stat-color': '#00ff04' }}
-              initial={{ y: -20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.3 }}
+              <span className="text-gradient">eShiksha</span>
+            </motion.h2>
+            
+            <motion.p
+              animate={{ opacity: [0.3, 1, 0.3] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginTop: '10px', letterSpacing: '3px', textTransform: 'uppercase', fontWeight: 600 }}
             >
-              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '4px', opacity: 0.8 }}>
-                <Activity size={16} color="#ffffff" />
-              </div>
-              <span className="stat-num">{statsLoading ? '-' : userStats.studentCount}</span>
-              <span className="stat-label">{t(content.online)}</span>
-            </motion.div>
-          </div>
-        </div>
+              Preparing Portal...
+            </motion.p>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-        {/* HERO SECTION */}
-        <div className="hero">
-          <motion.h1
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.8 }}
-          >
-            <span className="text-gradient">{t(content.titleStart)}</span> <br />
-            <span className="highlight">{t(content.titleEnd)}</span>
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            {t(content.subtitle)} <br className="mobile-break"/> {t(content.subtitle2)}
-          </motion.p>
-        </div>
+      <div className="background-trap">
+        <div className="grid-background"></div>
+        <div className="glow-spot glow-1"></div>
+        <div className="glow-spot glow-2"></div>
 
-        {/* CARDS GRID */}
-        <div className="card-grid">
-          <Link to="/login?role=student" className="card-link-wrapper">
-            <motion.div 
-              className="portal-card student-theme"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              whileHover={{ scale: 1.05 }} 
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            >
-              <div className="icon-box"><Rocket size={28} /></div>
-              <h2 className="card-title">{t(content.stu_portal)}</h2>
-              <p className="card-desc">{t(content.stu_desc)}</p>
-              <div className="action-row">{t(content.enter)} <ChevronRight size={16} /></div>
-            </motion.div>
-          </Link>
+        {!statsLoading && particles.map((p, i) => (
+          <motion.div
+            key={i}
+            className="glitter"
+            style={{ 
+              left: `${p.x}vw`, 
+              top: `${p.y}vh`,
+              width: p.isThick ? '3px' : '1px', 
+              height: p.isThick ? '3px' : '1px' 
+            }}
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: [0, 0.8, 0], scale: [0, p.scale, 0] }}
+            transition={{ duration: p.duration, repeat: Infinity, ease: "easeInOut", delay: p.delay }}
+          />
+        ))}
+      </div>
 
-          <Link to="/login?role=teacher" className="card-link-wrapper">
-            <motion.div 
-              className="portal-card mentor-theme"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              whileHover={{ scale: 1.05 }} 
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            >
-              <div className="icon-box"><Sparkles size={28} /></div>
-              <h2 className="card-title">{t(content.teach_portal)}</h2>
-              <p className="card-desc">{t(content.teach_desc)}</p>
-              <div className="action-row">{t(content.enter)} <ChevronRight size={16} /></div>
-            </motion.div>
-          </Link>
-
-          <Link to="/login?role=parent" className="card-link-wrapper">
-            <motion.div 
-              className="portal-card parent-theme"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              whileHover={{ scale: 1.05 }} 
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            >
-              <div className="icon-box"><Heart size={28} /></div>
-              <h2 className="card-title">{t(content.parent_portal)}</h2>
-              <p className="card-desc">{t(content.parent_desc)}</p>
-              <div className="action-row">{t(content.enter)} <ChevronRight size={16} /></div>
-            </motion.div>
-          </Link>
-        </div>
-                {/* 🔹 NEW: MEET THE DEVELOPERS BUTTON 🔹 */}
-        <motion.div
+      {!statsLoading && (
+        <motion.div 
+          className="container"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8 }}
-          style={{ marginTop: '60px', textAlign: 'center', width: '100%', display: 'flex', justifyContent: 'center' }}
+          transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <Link to="/developers" style={{ textDecoration: 'none' }}>
-            <button 
-              style={{
-                background: 'rgba(255, 255, 255, 0.03)',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                color: '#94a3b8',
-                padding: '12px 24px',
-                borderRadius: '50px',
-                fontSize: '0.9rem',
-                fontWeight: '600',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                transition: 'all 0.3s ease',
-                boxShadow: '0 10px 25px -5px rgba(0,0,0,0.3)',
-              }}
-              onMouseOver={(e) => {
-                e.currentTarget.style.background = 'rgba(56, 189, 248, 0.1)';
-                e.currentTarget.style.borderColor = 'rgba(56, 189, 248, 0.4)';
-                e.currentTarget.style.color = '#38bdf8';
-                e.currentTarget.style.transform = 'translateY(-3px)';
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
-                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-                e.currentTarget.style.color = '#94a3b8';
-                e.currentTarget.style.transform = 'translateY(0)';
-              }}
-            >
-              <Code2 size={18} />
-              Meet the Developers
-            </button>
-          </Link>
-        </motion.div>
+          {/* TOP ROW */}
+          <div className="header-row">
+            <div className="version-pill">
+                <div className="dot"></div>
+                {t(content.version)}
+            </div>
 
-      </motion.div>
+            <div className="stats-group">
+              <motion.div 
+                className="stat-card"
+                style={{ '--stat-color': '#3cff00' }}
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.4 }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '4px', opacity: 0.8 }}>
+                  <Users size={16} color="#ffffff" />
+                </div>
+                <span className="stat-num">{userStats.totalUsers}</span>
+                <span className="stat-label">{t(content.active)}</span>
+              </motion.div>
+
+              <motion.div 
+                className="stat-card"
+                style={{ '--stat-color': '#00ff04' }}
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.5 }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '4px', opacity: 0.8 }}>
+                  <Activity size={16} color="#ffffff" />
+                </div>
+                <span className="stat-num">{userStats.studentCount}</span>
+                <span className="stat-label">{t(content.online)}</span>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* HERO SECTION */}
+          <div className="hero">
+            <motion.h1
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              <span className="text-gradient">{t(content.titleStart)}</span> <br />
+              <span className="highlight">{t(content.titleEnd)}</span>
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+            >
+              {t(content.subtitle)} <br className="mobile-break"/> {t(content.subtitle2)}
+            </motion.p>
+          </div>
+
+          {/* CARDS GRID */}
+          <div className="card-grid">
+            <Link to="/login?role=student" className="card-link-wrapper">
+              <motion.div 
+                className="portal-card student-theme"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                whileHover={{ scale: 1.05 }} 
+                transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.1 }}
+              >
+                <div className="icon-box"><Rocket size={28} /></div>
+                <h2 className="card-title">{t(content.stu_portal)}</h2>
+                <p className="card-desc">{t(content.stu_desc)}</p>
+                <div className="action-row">{t(content.enter)} <ChevronRight size={16} /></div>
+              </motion.div>
+            </Link>
+
+            <Link to="/login?role=teacher" className="card-link-wrapper">
+              <motion.div 
+                className="portal-card mentor-theme"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                whileHover={{ scale: 1.05 }} 
+                transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.2 }}
+              >
+                <div className="icon-box"><Sparkles size={28} /></div>
+                <h2 className="card-title">{t(content.teach_portal)}</h2>
+                <p className="card-desc">{t(content.teach_desc)}</p>
+                <div className="action-row">{t(content.enter)} <ChevronRight size={16} /></div>
+              </motion.div>
+            </Link>
+
+            <Link to="/login?role=parent" className="card-link-wrapper">
+              <motion.div 
+                className="portal-card parent-theme"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                whileHover={{ scale: 1.05 }} 
+                transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.3 }}
+              >
+                <div className="icon-box"><Heart size={28} /></div>
+                <h2 className="card-title">{t(content.parent_portal)}</h2>
+                <p className="card-desc">{t(content.parent_desc)}</p>
+                <div className="action-row">{t(content.enter)} <ChevronRight size={16} /></div>
+              </motion.div>
+            </Link>
+          </div>
+          
+          {/* MEET THE DEVELOPERS BUTTON - Upgraded to Framer Motion! */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8 }}
+            style={{ marginTop: '60px', textAlign: 'center', width: '100%', display: 'flex', justifyContent: 'center' }}
+          >
+            <Link to="/developers" style={{ textDecoration: 'none' }}>
+              <motion.button 
+                whileHover={{ 
+                  scale: 1.05, 
+                  backgroundColor: 'rgba(56, 189, 248, 0.1)', 
+                  borderColor: 'rgba(56, 189, 248, 0.4)', 
+                  color: '#38bdf8',
+                  y: -3
+                }}
+                whileTap={{ scale: 0.95 }}
+                style={{
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  color: '#94a3b8',
+                  padding: '12px 24px',
+                  borderRadius: '50px',
+                  fontSize: '0.9rem',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  transition: 'background-color 0.3s, border-color 0.3s, color 0.3s',
+                  boxShadow: '0 10px 25px -5px rgba(0,0,0,0.3)',
+                }}
+              >
+                <Code2 size={18} />
+                Meet the Developers
+              </motion.button>
+            </Link>
+          </motion.div>
+        </motion.div>
+      )}
     </div>
   );
 }
