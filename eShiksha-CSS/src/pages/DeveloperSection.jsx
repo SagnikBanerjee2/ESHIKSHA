@@ -17,7 +17,7 @@ export default function DeveloperSection() {
       image: "https://res.cloudinary.com/du3l9swv0/image/upload/v1771664999/eshiksha_submissions/sub-1771664998555-WhatsApp%20Image%202026-02-21%20at%202.jpg", 
     
       linkedin: "https://www.linkedin.com/in/sagnik-banerjee-74a96a319/",
-      email: "ersagnikbanerjee@gmail.com"
+      email: "mailto:ersagnikbanerjee@gmail.com"
     },
     {
       id: 2,
@@ -27,7 +27,7 @@ export default function DeveloperSection() {
       image: "https://res.cloudinary.com/du3l9swv0/image/upload/v1771664798/eshiksha_submissions/sub-1771664798500-WhatsApp%20Image%202026-02-21%20at%201.jpg",
     
       linkedin: "https://www.linkedin.com/in/nairithanandmallick/?originalSubdomain=in",
-      email: "nairithmallick2006@gmail.com"
+      email: "mailto:nairithmallick2006@gmail.com"
     }
   ];
 
@@ -386,3 +386,4 @@ export default function DeveloperSection() {
   );
 
 }
+
